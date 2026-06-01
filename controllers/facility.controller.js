@@ -52,7 +52,7 @@ module.exports = {
   //get facility
   getFacility: async (req, res) => {
     try {
-      const { facility_name, page, limit, sortBy, order } = req.query;
+      const { facility_name, page = 1, limit = 10, sortBy, order } = req.query;
 
       const offset = (Number(page) - 1) * Number(limit);
 
@@ -125,10 +125,10 @@ module.exports = {
           type: "number",
           positive: true,
           integer: true,
-          facility_name: {
-            type: "string",
-            min: 2,
-          },
+        },
+        facility_name: {
+          type: "string",
+          min: 2,
         },
       };
 

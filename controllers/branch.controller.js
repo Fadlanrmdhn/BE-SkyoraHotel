@@ -69,7 +69,7 @@ module.exports = {
 
   getBranch: async (req, res) => {
     try {
-      const { branch_name, sortBy, order, page, limit } = req.query;
+      const { branch_name, sortBy, order, page = 1, limit = 10 } = req.query;
       const offset = (Number(page) - 1) * Number(limit);
       const { count, rows } = await Branch.findAndCountAll({
         offset: Number(offset),

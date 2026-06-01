@@ -11,7 +11,7 @@ module.exports = {
   //get payment
   getPayment: async (req, res) => {
     try {
-      const { payment_status, page, limit, sortBy, order } = req.query;
+      const { payment_status, page = 1, limit = 10, sortBy, order } = req.query;
 
       const offset = (Number(page) - 1) * Number(limit);
 

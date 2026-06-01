@@ -85,7 +85,7 @@ module.exports = {
 
   getRoom: async (req, res) => {
     try {
-      const { room_name, status, page, limit, sortBy, order } = req.query;
+      const { room_name, status, page = 1, limit = 10, sortBy, order } = req.query;
 
       const offset = (Number(page) - 1) * Number(limit);
 

@@ -8,7 +8,7 @@ const passwordHash = require("password-hash");
 module.exports = {
   getUser: async (req, res) => {
     try {
-      const { first_name, email, role, page, limit } = req.query;
+      const { first_name, email, role, page = 1, limit = 10 } = req.query;
 
       const offset = (Number(page) - 1) * Number(limit);
 
@@ -26,9 +26,9 @@ module.exports = {
               [Op.like]: `%${email}%`,
             },
           }),
-          ...(role && { rrole }),
+          ...(role && { role }),
         },
-        attribute: {
+        attributes: {
           exclude: ["password"],
         },
       });

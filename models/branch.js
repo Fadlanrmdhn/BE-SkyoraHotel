@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         get() {
           const rawValue = this.getDataValue("image");
-          return rawValue ? `https://localhost:3000/uploads/${rawValue}` : null;
+          return rawValue ? `http://localhost:3000/uploads/${rawValue}` : null;
         },
       },
     },

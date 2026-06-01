@@ -138,7 +138,7 @@ module.exports = {
   //get booking
   getBooking: async (req, res) => {
     try {
-      const { booking_code, booking_status, page, limit, sortBy, order } =
+      const { booking_code, booking_status, page = 1, limit = 10, sortBy, order } =
         req.query;
 
       const offset = (Number(page) - 1) * Number(limit);
@@ -414,7 +414,10 @@ module.exports = {
         "Content-Type",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       );
-      res.setHeader("Content-Disposition", 'attachment; filename="bookings.');
+      res.setHeader(
+        "Content-Disposition",
+        'attachment; filename="bookings.xlsx"',
+      );
 
       await workbook.xlsx.write(res);
 
@@ -451,7 +454,7 @@ module.exports = {
 
       const doc = new PDFDocument();
 
-      res.setHeader("Content-Type", "application/pddf");
+      res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",
         `attachment; filename=invoice-${booking.booking_code}.pdf`,
