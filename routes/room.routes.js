@@ -11,6 +11,9 @@ const upload = require('../middlewares/upload')
 router.post('/', checkAdmin, upload.single('image'), roomController.createRoom);
 router.get('/', roomController.getRoom);
 router.get('/:id', roomController.showRoom);
+
+//protected
+
 router.put('/:id', checkAdmin, upload.single('image'), roomController.updateRoom);
 router.delete('/:id', checkAdmin, roomController.deleteRoom)
 

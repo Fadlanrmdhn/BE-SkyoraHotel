@@ -5,8 +5,6 @@ const { Booking, Payment, Room, User, sequelize } = require("../models");
 const { Op } = require("sequelize");
 const ExcelJS = require("exceljs");
 const PDFDocument = require("pdfkit");
-const fs = require("fs");
-const path = require("path");
 
 module.exports = {
   //create booking
@@ -86,6 +84,34 @@ module.exports = {
       const totalNight = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       const totalPrice = Number(room.price_per_night) * totalNight;
 
+      const customer = await Customer.findOne({
+        where: {
+          user_id: req.user.userId,
+        },
+      });
+
+      if (!customer) {
+        return res
+          .status(400)
+          .json(response(400, "Customer profile not found"));
+      }
+
+      if (
+        !customer.phone_number ||
+        !customer.address ||
+        !customer.identity_number ||
+        !customer.gender
+      ) {
+        return res
+          .status(400)
+          .json(
+            response(
+              400,
+              "Please complete your customer profile before booking",
+            ),
+          );
+      }
+
       const booking = await Booking.create(
         {
           user_id: data.user_id,
@@ -138,8 +164,14 @@ module.exports = {
   //get booking
   getBooking: async (req, res) => {
     try {
-      const { booking_code, booking_status, page = 1, limit = 10, sortBy, order } =
-        req.query;
+      const {
+        booking_code,
+        booking_status,
+        page = 1,
+        limit = 10,
+        sortBy,
+        order,
+      } = req.query;
 
       const offset = (Number(page) - 1) * Number(limit);
 

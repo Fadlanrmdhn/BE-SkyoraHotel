@@ -2,9 +2,7 @@ const Validator = require("fastest-validator");
 const v = new Validator();
 const { response } = require("../helpers/response.formatter");
 const { Facility, Room } = require("../models");
-const { Op } = require("sequelize");
-const fs = require("fs");
-const path = require("path");
+const { Op } = require("sequelize");  
 
 module.exports = {
   //create facility

@@ -1,6 +1,6 @@
 const Validator = require("fastest-validator");
 const v = new Validator();
-const { User } = require("../models");
+const { User, Customer } = require("../models");
 const { response } = require("../helpers/response.formatter");
 const passwordHash = require("password-hash");
 const { auth_secret } = require("../config/base.config");
@@ -33,6 +33,10 @@ module.exports = {
           .json(response(400, "Validasi Error", "Email already used"));
       }
 
+      await Customer.create({
+        user_id: user.id,
+      });
+
       const user = await User.create({
         first_name,
         last_name,
@@ -49,7 +53,9 @@ module.exports = {
         role: user.role,
       };
 
-      return res.status(201).json(response(201, "Register Success", formatData));
+      return res
+        .status(201)
+        .json(response(201, "Register Success", formatData));
     } catch (error) {
       return res.status(500).json(response(500, "Server Error", error.message));
     }
@@ -84,7 +90,9 @@ module.exports = {
       if (!checkPassword) {
         return res
           .status(400)
-          .json(response(400, "Validasi Error", "Password incorrect. Try again!"));
+          .json(
+            response(400, "Validasi Error", "Password incorrect. Try again!"),
+          );
       }
 
       const token = jwt.sign(
@@ -95,7 +103,7 @@ module.exports = {
           email: user.email,
           role: user.role,
         },
-        auth_secret
+        auth_secret,
       );
 
       const formatData = {
